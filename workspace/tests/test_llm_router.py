@@ -208,6 +208,15 @@ async def test_xai_prefix(mock_acompletion):
     assert model.startswith("xai/"), f"Expected 'xai/' prefix, got: {model!r}"
 
 
+async def test_cohere_prefix(mock_acompletion):
+    """LLM-19: Cohere model string must start with 'cohere/'."""
+    config = _make_config("cohere_role", "cohere/command-r-plus", None)
+    router = SynapseLLMRouter(config)
+    await router.call("cohere_role", _TEST_MESSAGES)
+    model = _get_model_arg(mock_acompletion)
+    assert model.startswith("cohere/"), f"Expected 'cohere/' prefix, got: {model!r}"
+
+
 async def test_bedrock_prefix(mock_acompletion):
     """LLM-11: AWS Bedrock model string must start with 'bedrock/'."""
     config = _make_config(
